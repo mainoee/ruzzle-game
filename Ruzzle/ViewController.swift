@@ -125,22 +125,6 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func startNewGame() {
-        score = 0
-        finalScore.text = "Total score: \(score)"
-        finalWord = ""
-        listOfWords = []
-        labelsSelected = []
-        wordFound.text = "Play now!"
-
-        for label in labelsDice {
-            label.isUserInteractionEnabled = true
-            label.backgroundColor = .link
-            label.font = label.font.withSize(28)
-            label.text = alphabet.randomElement()?.uppercased()
-        }
-    }
-    
     func wordChecked(_ word: String, completionHandler: @escaping (_ success: Bool) -> ())  {
         let appId = "9d248acf"
         let appKey = "3bef9b8a4d4113e061dedb2238b75117"
@@ -183,5 +167,21 @@ class ViewController: UIViewController {
         alert.addAction(alertAction)
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    @IBAction func startNewGame() {
+        score = 0
+        finalScore.text = "Total score: \(score)"
+        finalWord = ""
+        listOfWords = []
+        labelsSelected = []
+        wordFound.text = "Play now!"
+
+        for label in labelsDice {
+            label.isUserInteractionEnabled = true
+            label.backgroundColor = .link
+            label.font = label.font.withSize(28)
+            label.text = alphabet.randomElement()?.uppercased()
+        }
     }
 }
