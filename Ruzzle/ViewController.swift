@@ -76,7 +76,7 @@ class ViewController: UIViewController {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if finalWord.count < 3 {
             let title = "Sorry!"
-            let message = "A word must be at least 3 characters long!"
+            let message = "3 characters long minimum!"
             let action = "Continue"
             showAlert(title, message, action)
         } else {
@@ -88,43 +88,6 @@ class ViewController: UIViewController {
                 }
             }
             perform(#selector(sendMessages), with: nil, afterDelay: 1)
-        }
-    }
-    
-    @objc func sendMessages() {
-        if !validWord {
-            let title = "Sorry!"
-            let message = "That word doesn't exist!"
-            let action = "Continue"
-            showAlert(title, message, action)
-        } else if listOfWords.contains(finalWord) {
-            let title = "Oops!"
-            let message = "You've already picked that word!"
-            let action = "Continue"
-            showAlert(title, message, action)
-        } else {
-            let title = "Congrats"
-            let message = "+\(finalWord.count) points"
-            let action = "Continue"
-            showAlert(title, message, action)
-            updateGame()
-        }
-    }
-    
-    func updateGame() {
-        score += finalWord.count
-        listOfWords.append(finalWord)
-        wordFound.text = finalWord
-        finalScore.text = "Total score: \(score)"
-    }
-    
-    func startNewRound() {
-        finalWord = ""
-        labelsSelected = []
-        
-        for label in labelsDice {
-            label.isUserInteractionEnabled = true
-            label.backgroundColor = .link
         }
     }
     
@@ -159,6 +122,26 @@ class ViewController: UIViewController {
         }).resume()
     }
     
+    @objc func sendMessages() {
+        if !validWord {
+            let title = "Sorry!"
+            let message = "That word doesn't exist!"
+            let action = "Continue"
+            showAlert(title, message, action)
+        } else if listOfWords.contains(finalWord) {
+            let title = "Oops!"
+            let message = "You've already picked that word!"
+            let action = "Continue"
+            showAlert(title, message, action)
+        } else {
+            let title = "Congrats"
+            let message = "+\(finalWord.count) points"
+            let action = "Continue"
+            showAlert(title, message, action)
+            updateGame()
+        }
+    }
+    
     func showAlert(_ title: String, _ message: String, _ action: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
@@ -170,6 +153,23 @@ class ViewController: UIViewController {
         alert.addAction(alertAction)
         
         present(alert, animated: true, completion: nil)
+    }
+    
+    func updateGame() {
+        score += finalWord.count
+        listOfWords.append(finalWord)
+        wordFound.text = finalWord
+        finalScore.text = "Total score: \(score)"
+    }
+    
+    func startNewRound() {
+        finalWord = ""
+        labelsSelected = []
+        
+        for label in labelsDice {
+            label.isUserInteractionEnabled = true
+            label.backgroundColor = .link
+        }
     }
     
     @IBAction func startNewGame() {
