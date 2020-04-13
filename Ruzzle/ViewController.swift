@@ -50,17 +50,27 @@ class ViewController: UIViewController {
                 if label.isUserInteractionEnabled {
                     if label.frame.contains(location) {
                         if finalWord.isEmpty {
-                            updateGame(label)
+                            updateGraphics(label)
                         } else {
                             guard let lastLabelSelected = labelsSelected.last else { return }
                             if (lastLabelSelected.center.x == label.center.x && lastLabelSelected.center.y - label.center.y == 100) || (lastLabelSelected.center.y == label.center.y && lastLabelSelected.center.x - label.center.x == 100) || (lastLabelSelected.center.x == label.center.x && lastLabelSelected.center.y - label.center.y == -100) || (lastLabelSelected.center.y == label.center.y && lastLabelSelected.center.x - label.center.x == -100) {
-                                updateGame(label)
+                                updateGraphics(label)
                             }
                         }
                     }
                 }
             }
         }
+    }
+    
+    func updateGraphics(_ label: UILabel) {
+        label.isUserInteractionEnabled = false
+        label.backgroundColor = .lightGray
+        
+        guard let letter = label.text else { return }
+        finalWord += letter
+        
+        labelsSelected.append(label)
     }
   
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -93,26 +103,19 @@ class ViewController: UIViewController {
             let action = "Continue"
             showAlert(title, message, action)
         } else {
-            score += finalWord.count
-            listOfWords.append(finalWord)
-            wordFound.text = finalWord
-            finalScore.text = "Total score: \(score)"
-
             let title = "Congrats"
-            let message = "Your score is \(finalWord.count)!"
+            let message = "+\(finalWord.count) points"
             let action = "Continue"
             showAlert(title, message, action)
+            updateGame()
         }
     }
     
-    func updateGame(_ label: UILabel) {
-        label.isUserInteractionEnabled = false
-        label.backgroundColor = .lightGray
-        
-        guard let letter = label.text else { return }
-        finalWord += letter
-        
-        labelsSelected.append(label)
+    func updateGame() {
+        score += finalWord.count
+        listOfWords.append(finalWord)
+        wordFound.text = finalWord
+        finalScore.text = "Total score: \(score)"
     }
     
     func startNewRound() {
