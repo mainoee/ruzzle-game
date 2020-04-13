@@ -65,13 +65,10 @@ class ViewController: UIViewController {
   
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if finalWord.count < 3 {
-            let wordNotLongEnough = UIAlertController(title: "Sorry!",  message: "A word must be at least 3 characters long!", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Continue", style: .default, handler: {
-                action in
-                self.startNewRound()
-            })
-            wordNotLongEnough.addAction(action)
-            present(wordNotLongEnough, animated: true, completion: nil)
+            let title = "Sorry!"
+            let message = "A word must be at least 3 characters long!"
+            let action = "Continue"
+            showAlert(title, message, action)
         } else {
             wordChecked(finalWord) { [weak self] (success) in
                 if success {
@@ -86,34 +83,25 @@ class ViewController: UIViewController {
     
     @objc func sendMessages() {
         if !validWord {
-            let wordNotValid = UIAlertController(title: "Sorry!",  message: "That word doesn't exist!", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Continue", style: .default, handler: {
-                action in
-                self.startNewRound()
-            })
-            wordNotValid.addAction(action)
-            present(wordNotValid, animated: true, completion: nil)
+            let title = "Sorry!"
+            let message = "That word doesn't exist!"
+            let action = "Continue"
+            showAlert(title, message, action)
         } else if listOfWords.contains(finalWord) {
-            let wordAlreadyPicked = UIAlertController(title: "Oops!",  message: "You've already picked that word!", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Continue", style: .default, handler: {
-                action in
-                self.startNewRound()
-            })
-            wordAlreadyPicked.addAction(action)
-            present(wordAlreadyPicked, animated: true, completion: nil)
+            let title = "Oops!"
+            let message = "You've already picked that word!"
+            let action = "Continue"
+            showAlert(title, message, action)
         } else {
             score += finalWord.count
             listOfWords.append(finalWord)
             wordFound.text = finalWord
             finalScore.text = "Total score: \(score)"
 
-            let congrats = UIAlertController(title: "Congrats",  message: "Your score is \(finalWord.count)!", preferredStyle: .alert)
-            let action = UIAlertAction(title: "Continue", style: .default, handler: {
-                action in
-                self.startNewRound()
-            })
-            congrats.addAction(action)
-            present(congrats, animated: true, completion: nil)
+            let title = "Congrats"
+            let message = "Your score is \(finalWord.count)!"
+            let action = "Continue"
+            showAlert(title, message, action)
         }
     }
     
@@ -182,5 +170,18 @@ class ViewController: UIViewController {
                 print("Error serializing")
             }
         }).resume()
+    }
+    
+    func showAlert(_ title: String, _ message: String, _ action: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        let alertAction = UIAlertAction(title: action, style: .default, handler:  {
+            action in
+            self.startNewRound()
+        })
+        
+        alert.addAction(alertAction)
+        
+        present(alert, animated: true, completion: nil)
     }
 }
